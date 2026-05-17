@@ -24,10 +24,17 @@ Route::get('/checkout', [EventController::class, 'checkout'])->name('checkout');
 Route::get('/my-ticket', [EventController::class, 'ticket'])->name('ticket');
 
 // =============================================
-// ADMIN AREA - Menggunakan prefix 'admin'
+// ADMIN AREA
 // =============================================
 Route::prefix('admin')->name('admin.')->group(function () {
-    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/events', [AdminEventController::class, 'index'])->name('events.index');
-    Route::get('/transactions', [TransactionController::class, 'index'])->name('transactions.index');
+
+    Route::get('/', [DashboardController::class, 'index'])
+        ->name('dashboard');
+
+    // CRUD EVENT
+    Route::resource('events', AdminEventController::class);
+
+    // TRANSAKSI
+    Route::get('/transactions', [TransactionController::class, 'index'])
+        ->name('transactions.index');
 });
