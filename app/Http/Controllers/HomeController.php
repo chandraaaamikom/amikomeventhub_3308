@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Partner;
+use App\Models\Category;
+use App\Models\Event;
 
 class HomeController extends Controller
 {
@@ -11,7 +14,11 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('welcome');
+        $partners = Partner::latest()->get();
+        $categories = Category::latest()->get();
+        $events = Event::with('category')->latest()->take(3)->get();
+
+        return view('welcome', compact('partners', 'categories', 'events'));
     }
 
     /**
@@ -25,9 +32,18 @@ class HomeController extends Controller
     /**
      * Menampilkan halaman katalog event
      */
-    public function katalog()
+    public function katalog(Request $request)
     {
-        return view('katalog');
+        $events = Event::with('category')
+            ->when($request->search, function ($query, $search) {
+                return $query->where('title', 'LIKE', '%' . $search . '%')
+                    ->orWhere('description', 'LIKE', '%' . $search . '%')
+                    ->orWhere('location', 'LIKE', '%' . $search . '%');
+            })
+            ->latest()
+            ->get();
+
+        return view('katalog', compact('events'));
     }
 
     /**
