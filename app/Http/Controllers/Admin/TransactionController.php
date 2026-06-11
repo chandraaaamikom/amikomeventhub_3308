@@ -3,15 +3,22 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Transaction;
 use Illuminate\Http\Request;
 
 class TransactionController extends Controller
 {
-    /**
-     * Menampilkan halaman laporan transaksi
-     */
-    public function index()
+    public function index(Request $request)
     {
-        return view('admin.transactions');
+        $transactions = Transaction::with('event')
+            ->when($request->search, function ($query, $search) {
+                $query->where('order_id', 'LIKE', '%' . $search . '%')
+                    ->orWhere('customer_name', 'LIKE', '%' . $search . '%')
+                    ->orWhere('customer_email', 'LIKE', '%' . $search . '%');
+            })
+            ->latest()
+            ->paginate(10);
+
+        return view('admin.transactions', compact('transactions'));
     }
 }
