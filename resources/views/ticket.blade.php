@@ -2,83 +2,150 @@
 
 @section('title', 'E-Ticket - AmikomEventHub')
 
-@section('styles')
-<style>
-    body { background-color: #4f46e5; }
-    main { background-color: #4f46e5; }
-</style>
-@endsection
-
 @section('content')
-<div class="min-h-screen flex items-center justify-center p-6">
-    <div class="max-w-md w-full">
-        <!-- Success Banner -->
-        <div class="text-center mb-8 text-white">
-            <div class="w-20 h-20 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 border-4 border-white">
-                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"></path>
-                </svg>
-            </div>
-            <h1 class="text-3xl font-black">Pembayaran Berhasil!</h1>
-            <p class="text-indigo-100 mt-2">Tiket Anda telah terbit dan siap digunakan.</p>
-        </div>
+    <section class="min-h-screen bg-indigo-600 px-6 py-16 text-white">
 
-        <!-- Ticket Card -->
-        <div class="bg-white text-slate-900 rounded-[2.5rem] overflow-hidden shadow-2xl relative">
-            <div class="p-8 bg-indigo-50 border-b-4 border-dashed border-indigo-100 text-center relative">
-                <p class="text-indigo-600 font-bold uppercase tracking-widest text-xs mb-2">E-Ticket Resmi</p>
-                <h2 class="text-2xl font-black leading-tight">Jazz Night 2024: A Celebration</h2>
-                <div class="absolute -left-4 -bottom-4 w-8 h-8 bg-indigo-600 rounded-full"></div>
-                <div class="absolute -right-4 -bottom-4 w-8 h-8 bg-indigo-600 rounded-full"></div>
+        <div class="max-w-4xl mx-auto text-center">
+
+            <div class="w-20 h-20 mx-auto mb-6 bg-white text-indigo-600 rounded-full flex items-center justify-center text-4xl font-black shadow-xl">
+                ✓
             </div>
 
-            <div class="p-8 space-y-8">
-                <div class="grid grid-cols-2 gap-6">
-                    <div>
-                        <p class="text-slate-400 text-xs font-bold uppercase mb-1">Nama Pembeli</p>
-                        <p class="font-bold text-lg">Donni Prabowo</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-xs font-bold uppercase mb-1">Tanggal & Waktu</p>
-                        <p class="font-bold text-lg">16 Nov, 19:30</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-xs font-bold uppercase mb-1">Order ID</p>
-                        <p class="font-bold">TRX-99210</p>
-                    </div>
-                    <div>
-                        <p class="text-slate-400 text-xs font-bold uppercase mb-1">Lokasi</p>
-                        <p class="font-bold">Blue Note Lounge</p>
-                    </div>
-                </div>
+            <h1 class="text-4xl font-black mb-3">
+                Pembayaran Berhasil!
+            </h1>
 
-                <div class="bg-slate-100 p-6 rounded-3xl flex flex-col items-center">
-                    <p class="text-slate-400 text-xs font-bold uppercase mb-4">Scan QR untuk Check-in</p>
-                    <div class="w-48 h-48 bg-white p-4 rounded-xl shadow-inner flex items-center justify-center">
-                        <div class="w-full h-full border-4 border-slate-900 flex flex-wrap p-1">
-                            <div class="w-1/4 h-1/4 bg-slate-900"></div><div class="w-1/4 h-1/4 bg-white"></div>
-                            <div class="w-1/4 h-1/4 bg-slate-900"></div><div class="w-1/4 h-1/4 bg-white"></div>
-                            <div class="w-1/4 h-1/4 bg-white"></div><div class="w-1/4 h-1/4 bg-slate-900"></div>
-                            <div class="w-1/4 h-1/4 bg-white"></div><div class="w-1/4 h-1/4 bg-slate-900"></div>
-                            <div class="w-1/4 h-1/4 bg-slate-900"></div><div class="w-1/4 h-1/4 bg-white"></div>
-                            <div class="w-1/4 h-1/4 bg-slate-900"></div><div class="w-1/4 h-1/4 bg-white"></div>
-                            <div class="w-1/4 h-1/4 bg-white"></div><div class="w-1/4 h-1/4 bg-slate-900"></div>
-                            <div class="w-1/4 h-1/4 bg-white"></div><div class="w-1/4 h-1/4 bg-slate-900"></div>
+            <p class="text-indigo-100 text-lg mb-10">
+                Tiket Anda telah terbit dan siap digunakan.
+            </p>
+
+            @if ($transaction)
+                <div class="max-w-xl mx-auto bg-white text-slate-900 rounded-[2rem] overflow-hidden shadow-2xl">
+
+                    {{-- HEADER TICKET --}}
+                    <div class="bg-slate-100 px-8 py-8 text-center">
+                        <p class="text-indigo-600 font-black uppercase tracking-widest mb-3">
+                            E-Ticket Resmi
+                        </p>
+
+                        <h2 class="text-3xl font-black leading-tight">
+                            {{ $transaction->event->title ?? 'Event Tidak Ditemukan' }}
+                        </h2>
+                    </div>
+
+                    <div class="border-t-4 border-dashed border-indigo-100 relative">
+                        <div class="absolute -left-5 -top-5 w-10 h-10 rounded-full bg-indigo-600"></div>
+                        <div class="absolute -right-5 -top-5 w-10 h-10 rounded-full bg-indigo-600"></div>
+                    </div>
+
+                    {{-- BODY TICKET --}}
+                    <div class="p-8">
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-left mb-8">
+
+                            <div>
+                                <p class="text-xs font-black uppercase text-slate-400 mb-2">
+                                    Nama Pembeli
+                                </p>
+                                <p class="text-xl font-black text-slate-900">
+                                    {{ $transaction->customer_name }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs font-black uppercase text-slate-400 mb-2">
+                                    Tanggal & Waktu
+                                </p>
+                                <p class="text-xl font-black text-slate-900">
+                                    {{ $transaction->event && $transaction->event->date ? \Carbon\Carbon::parse($transaction->event->date)->format('d M Y, H:i') : '-' }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs font-black uppercase text-slate-400 mb-2">
+                                    Order ID
+                                </p>
+                                <p class="text-xl font-black text-slate-900">
+                                    {{ $transaction->order_id }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs font-black uppercase text-slate-400 mb-2">
+                                    Lokasi
+                                </p>
+                                <p class="text-xl font-black text-slate-900">
+                                    {{ $transaction->event->location ?? '-' }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs font-black uppercase text-slate-400 mb-2">
+                                    Email
+                                </p>
+                                <p class="text-base font-bold text-slate-700 break-all">
+                                    {{ $transaction->customer_email }}
+                                </p>
+                            </div>
+
+                            <div>
+                                <p class="text-xs font-black uppercase text-slate-400 mb-2">
+                                    Total Bayar
+                                </p>
+                                <p class="text-xl font-black text-indigo-600">
+                                    Rp {{ number_format($transaction->total_price, 0, ',', '.') }}
+                                </p>
+                            </div>
+
                         </div>
-                    </div>
-                    <p class="mt-4 font-mono font-bold text-slate-800">TKT-001293848</p>
-                </div>
-            </div>
 
-            <div class="px-8 pb-8">
-                <button onclick="window.print()" class="w-full py-4 bg-indigo-600 text-white rounded-2xl font-bold shadow-lg hover:bg-indigo-700 transition">
-                    Cetak / Simpan PDF
-                </button>
-                <a href="{{ route('home') }}" class="block text-center mt-4 text-slate-500 font-bold hover:text-indigo-600">
-                    Kembali ke Beranda
-                </a>
-            </div>
+                        {{-- QR DUMMY --}}
+                        <div class="bg-slate-100 rounded-3xl p-6 text-center">
+                            <p class="text-xs font-black uppercase text-slate-400 mb-5">
+                                Scan QR untuk Check-In
+                            </p>
+
+                            <div class="w-44 h-44 bg-white mx-auto rounded-2xl shadow-lg flex items-center justify-center">
+                                <div class="grid grid-cols-4 gap-1">
+                                    @for ($i = 1; $i <= 16; $i++)
+                                        <div class="w-8 h-8 {{ in_array($i, [1, 2, 4, 6, 7, 9, 11, 12, 14, 16]) ? 'bg-slate-900' : 'bg-white' }} border border-slate-200"></div>
+                                    @endfor
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-8 flex flex-col sm:flex-row gap-4">
+                            <a href="{{ route('home') }}"
+                                class="flex-1 px-6 py-4 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition text-center">
+                                Kembali ke Home
+                            </a>
+
+                            <a href="{{ route('katalog') }}"
+                                class="flex-1 px-6 py-4 bg-slate-100 text-slate-700 rounded-2xl font-black hover:bg-slate-200 transition text-center">
+                                Lihat Event Lain
+                            </a>
+                        </div>
+
+                    </div>
+                </div>
+            @else
+                <div class="max-w-xl mx-auto bg-white text-slate-900 rounded-[2rem] p-10 shadow-2xl">
+                    <h2 class="text-2xl font-black mb-3">
+                        Belum ada tiket.
+                    </h2>
+
+                    <p class="text-slate-500 mb-6">
+                        Silakan pesan tiket terlebih dahulu melalui katalog event.
+                    </p>
+
+                    <a href="{{ route('katalog') }}"
+                        class="inline-block px-6 py-4 bg-indigo-600 text-white rounded-2xl font-black hover:bg-indigo-700 transition">
+                        Buka Katalog
+                    </a>
+                </div>
+            @endif
+
         </div>
-    </div>
-</div>
+
+    </section>
 @endsection

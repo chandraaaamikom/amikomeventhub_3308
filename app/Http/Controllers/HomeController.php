@@ -2,45 +2,59 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Event;
+use App\Models\Category;
+use App\Models\Partner;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
-    /**
-     * Menampilkan halaman utama (beranda)
-     */
     public function index()
     {
-        return view('welcome');
+        $events = Event::with('category')
+            ->latest()
+            ->take(6)
+            ->get();
+
+        $categories = Category::latest()
+            ->take(6)
+            ->get();
+
+        $partners = Partner::latest()
+            ->take(6)
+            ->get();
+
+        return view('welcome', compact('events', 'categories', 'partners'));
     }
 
-    /**
-     * Menampilkan halaman profil praktikan
-     */
     public function profil()
     {
         return view('profil');
     }
 
-    /**
-     * Menampilkan halaman katalog event
-     */
-    public function katalog()
+    public function katalog(Request $request)
     {
-        return view('katalog');
+        $search = $request->search;
+
+        $events = Event::with('category')
+            ->when($search, function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('location', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+            })
+            ->latest()
+            ->get();
+
+        $categories = Category::all();
+
+        return view('katalog', compact('events', 'categories', 'search'));
     }
 
-    /**
-     * Menampilkan halaman bantuan / FAQ
-     */
     public function bantuan()
     {
         return view('bantuan');
     }
 
-    /**
-     * Menampilkan halaman kontak
-     */
     public function kontak()
     {
         return view('contact');

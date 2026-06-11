@@ -11,10 +11,24 @@ use Illuminate\Support\Facades\Storage;
 class EventController extends Controller
 {
     // READ - Tampilkan daftar event
-    public function index()
+    public function index(Request $request)
     {
-        $events = Event::with('category')->latest()->paginate(10);
-        return view('admin.events.index', compact('events'));
+    $search = $request->search;
+
+    $events = \App\Models\Event::with('category')
+        ->when($search, function ($query) use ($search) {
+            $query->where('title', 'like', '%' . $search . '%')
+                ->orWhere('location', 'like', '%' . $search . '%')
+                ->orWhere('description', 'like', '%' . $search . '%')
+                ->orWhereHas('category', function ($categoryQuery) use ($search) {
+                    $categoryQuery->where('name', 'like', '%' . $search . '%');
+                });
+        })
+        ->latest()
+        ->paginate(10)
+        ->withQueryString();
+
+    return view('admin.events.index', compact('events', 'search'));
     }
 
     // CREATE - Tampilkan form tambah event

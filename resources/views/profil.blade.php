@@ -1,30 +1,65 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Profil</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-200">
+@extends('layouts.app')
 
-<nav class="bg-slate-800 p-4 shadow-lg mb-8">
-    <div class="container mx-auto flex justify-center gap-4">
-        <a href="/" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition duration-300 shadow-md">Home</a>
-        <a href="/profil" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition duration-300 shadow-md">Profil</a>
-        <a href="/katalog" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition duration-300 shadow-md">Katalog</a>
-        <a href="/bantuan" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition duration-300 shadow-md">Bantuan</a>
-        <a href="/contact" class="px-4 py-2 bg-blue-600 hover:bg-blue-500 text-white rounded-lg transition duration-300 shadow-md">Kontak</a>
-    </div>
-</nav>
+@section('title', 'Profil - AmikomEventHub')
 
-<div class="p-5">
-    <h1 class="text-xl font-bold mb-3">Profil Praktikan</h1>
+@section('content')
+    <section class="max-w-7xl mx-auto px-6 py-16">
 
-    <div class="bg-white p-4 border">
-        <p>Nama : Chandra Pratama Wahana Putra</p>
-        <p>NIM : 24.12.3308</p>
-        <p>Jurusan : Sistem Informasi</p>
-    </div>
-</div>
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/60 p-8 md:p-10">
 
-</body>
-</html>
+                <div class="flex flex-col md:flex-row md:items-center gap-6 mb-10">
+                    <div class="w-28 h-28 bg-indigo-600 text-white rounded-[1.7rem] flex items-center justify-center font-black text-4xl shadow-lg shadow-indigo-200">
+                        CP
+                    </div>
+
+                    <div>
+                        <h1 class="text-4xl font-black text-slate-900">
+                            Profil Praktikan
+                        </h1>
+
+                        <p class="text-slate-500 text-lg mt-2">
+                            Informasi data mahasiswa praktikan AmikomEventHub
+                        </p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+                        <p class="text-sm font-black text-slate-500 uppercase tracking-wide mb-3">
+                            Nama
+                        </p>
+
+                        <p class="text-xl font-semibold text-slate-900">
+                            Chandra Pratama Wahana Putra
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6">
+                        <p class="text-sm font-black text-slate-500 uppercase tracking-wide mb-3">
+                            NIM
+                        </p>
+
+                        <p class="text-xl font-semibold text-slate-900">
+                            24.12.3308
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-50 border border-slate-200 rounded-2xl p-6 md:col-span-2">
+                        <p class="text-sm font-black text-slate-500 uppercase tracking-wide mb-3">
+                            Jurusan
+                        </p>
+
+                        <p class="text-xl font-semibold text-slate-900">
+                            Sistem Informasi
+                        </p>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+@endsection
