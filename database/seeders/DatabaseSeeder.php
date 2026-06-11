@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Category;
 use App\Models\Event;
+use App\Models\Partner;
 
 class DatabaseSeeder extends Seeder
 {
@@ -113,6 +114,35 @@ class DatabaseSeeder extends Seeder
                 'price' => 30000,
                 'stock' => 64,
                 'poster_path' => 'posters/event-6.png',
+            ]
+        );
+
+        // 4. Insert Partner
+        Partner::updateOrCreate(
+            ['name' => 'AMIKOM Creative Center'],
+            [
+                'logo_url' => 'https://ui-avatars.com/api/?name=AMIKOM+Creative+Center&background=6366f1&color=fff',
+            ]
+        );
+
+        Partner::updateOrCreate(
+            ['name' => 'Inkubator Amikom'],
+            [
+                'logo_url' => 'https://ui-avatars.com/api/?name=Inkubator+Amikom&background=8b5cf6&color=fff',
+            ]
+        );
+
+        Partner::updateOrCreate(
+            ['name' => 'Cinema Unit 6'],
+            [
+                'logo_url' => 'https://ui-avatars.com/api/?name=Cinema+Unit+6&background=ec4899&color=fff',
+            ]
+        );
+
+        Partner::updateOrCreate(
+            ['name' => 'AMIKOM Event Organizer'],
+            [
+                'logo_url' => 'https://ui-avatars.com/api/?name=AMIKOM+Event+Organizer&background=10b981&color=fff',
             ]
         );
     }
