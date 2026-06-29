@@ -63,8 +63,7 @@
                 <div class="absolute -top-10 -left-10 w-72 h-72 bg-indigo-300 rounded-full blur-3xl opacity-30"></div>
                 <div class="absolute -bottom-10 -right-10 w-72 h-72 bg-pink-300 rounded-full blur-3xl opacity-30"></div>
 
-                <img src="{{ asset('assets/concert.png') }}" alt="Concert"
-                    class="relative z-10 w-full rounded-[2.5rem] shadow-2xl shadow-slate-300/70 object-cover aspect-[4/5] border-8 border-white">
+                <img src="https://placehold.co/400x500" alt="Hero Image" class="w-full h-auto rounded-[2rem] object-cover shadow-2xl">
 
                 <div
                     class="absolute -bottom-6 left-6 right-6 md:left-[-1.5rem] md:right-auto z-20 bg-white/90 backdrop-blur-xl p-6 rounded-3xl shadow-2xl border border-white">
@@ -145,43 +144,11 @@
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
 
                 @forelse ($events as $event)
-                    @php
-                        $title = Str::lower($event->title);
-                        $poster = 'assets/concert.png';
-
-                        if (
-                            Str::contains($title, 'ai') ||
-                            Str::contains($title, 'ui') ||
-                            Str::contains($title, 'ux') ||
-                            Str::contains($title, 'seminar') ||
-                            Str::contains($title, 'workshop')
-                        ) {
-                            $poster = 'assets/workshop.png';
-                        } elseif (
-                            Str::contains($title, 'hackathon') ||
-                            Str::contains($title, 'coding') ||
-                            Str::contains($title, 'developer') ||
-                            Str::contains($title, 'e-sport') ||
-                            Str::contains($title, 'tournament')
-                        ) {
-                            $poster = 'assets/hackathon.png';
-                        } elseif (
-                            Str::contains($title, 'jazz') ||
-                            Str::contains($title, 'stand up') ||
-                            Str::contains($title, 'comedy') ||
-                            Str::contains($title, 'night') ||
-                            Str::contains($title, 'entertainment')
-                        ) {
-                            $poster = 'assets/concert.png';
-                        }
-                    @endphp
-
                     <div
                         class="group bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/60 overflow-hidden hover:scale-[1.03] transition duration-300">
 
                         <div class="relative overflow-hidden aspect-[3/4] bg-slate-100">
-                            <img src="{{ asset($poster) }}" alt="{{ $event->title }}"
-                                class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                            <img src="{{ ($event->poster_path && \Storage::disk('public')->exists($event->poster_path)) ? asset('storage/' . $event->poster_path) : 'https://placehold.co/400x600' }}" alt="{{ $event->title }}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
 
                             <div
                                 class="absolute top-4 left-4 px-4 py-2 bg-white/90 backdrop-blur rounded-xl text-xs font-black uppercase text-indigo-600">
@@ -247,8 +214,7 @@
                     <div
                         class="bg-white rounded-[2rem] border border-slate-200 shadow-xl shadow-slate-200/60 p-8 hover:scale-105 transition duration-300 text-center">
                         <div class="w-24 h-24 mx-auto mb-5">
-                            <img src="{{ $partner->logo_url }}" alt="{{ $partner->name }}"
-                                class="w-full h-full object-contain rounded-2xl">
+                            <img src="https://ui-avatars.com/api/?name={{ urlencode($partner->name) }}&background=random" alt="{{ $partner->name }}" class="w-full h-full rounded-2xl object-cover shadow-sm">
                         </div>
 
                         <h3 class="font-black text-slate-800 text-lg">

@@ -40,27 +40,30 @@ class EventController extends Controller
 
     // STORE - Simpan event baru ke database
     public function store(Request $request)
-    {
-        $data = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'date'        => 'required|date',
-            'location'    => 'required|string|max:255',
-            'price'       => 'required|numeric|min:0',
-            'stock'       => 'required|numeric|min:1',
-            'poster'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+{
+     // Menerapkan validasi data request dari pengguna
+     $data = $request->validate([
+        'category_id' => 'required|exists:categories,id',
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'date' => 'required|date',
+        'location' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|numeric|min:1',
+        'poster' => 'nullable|image|max:2048' // Maksimal 2MB
+    ]);
 
-        if ($request->hasFile('poster')) {
-            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
-        }
-
-        Event::create($data);
-
-        return redirect()->route('admin.events.index')
-            ->with('success', 'Event berhasil ditambahkan.');
+    if ($request->hasFile('poster')) {
+        // Simpan ke direktori storage/app/public/posters
+        $data['poster_path'] = $request->file('poster')->store('posters', 'public');
     }
+
+     // Menyimpan data yang telah divalidasi ke dalam tabel menggunakan Model
+     \App\Models\Event::create($data);
+
+     return redirect()->route('admin.events.index')->with('success', 'Data Event berhasil ditambahkan.');
+}
+
 
     // EDIT - Tampilkan form edit event
     public function edit(Event $event)
@@ -71,31 +74,31 @@ class EventController extends Controller
 
     // UPDATE - Simpan perubahan event ke database
     public function update(Request $request, Event $event)
-    {
-        $data = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'title'       => 'required|string|max:255',
-            'description' => 'required|string',
-            'date'        => 'required|date',
-            'location'    => 'required|string|max:255',
-            'price'       => 'required|numeric|min:0',
-            'stock'       => 'required|numeric|min:1',
-            'poster'      => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+{
+   $data = $request->validate([
+        'category_id' => 'required|exists:categories,id',
+        'title' => 'required|string|max:255',
+        'description' => 'nullable|string',
+        'date' => 'required|date',
+        'location' => 'required|string|max:255',
+        'price' => 'required|numeric|min:0',
+        'stock' => 'required|numeric|min:1',
+        'poster' => 'nullable|image|max:2048'
+    ]); 
 
-        if ($request->hasFile('poster')) {
-            // Hapus poster lama jika ada
-            if ($event->poster_path) {
-                Storage::disk('public')->delete($event->poster_path);
-            }
-            $data['poster_path'] = $request->file('poster')->store('posters', 'public');
+    if ($request->hasFile('poster')) {
+        // Hapus gambar lama jika sebelumnya sudah memiliki poster
+        if ($event->poster_path) {
+            \Illuminate\Support\Facades\Storage::disk('public')->delete($event->poster_path);
         }
-
-        $event->update($data);
-
-        return redirect()->route('admin.events.index')
-            ->with('success', 'Event berhasil diperbarui.');
+        // Upload gambar baru
+        $data['poster_path'] = $request->file('poster')->store('posters', 'public');
     }
+
+    $event->update($data);
+    return redirect()->route('admin.events.index')->with('success', 'Event berhasil diperbarui.');
+}
+
 
     // DELETE - Hapus event dari database
     public function destroy(Event $event)

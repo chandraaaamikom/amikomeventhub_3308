@@ -73,44 +73,13 @@
             <tbody class="divide-y border-t">
                 @forelse($events as $index => $event)
 
-                    @php
-                        $title = Str::lower($event->title);
-                        $poster = 'assets/concert.png';
-
-                        if (
-                            Str::contains($title, 'ai') ||
-                            Str::contains($title, 'ui') ||
-                            Str::contains($title, 'ux') ||
-                            Str::contains($title, 'seminar') ||
-                            Str::contains($title, 'workshop')
-                        ) {
-                            $poster = 'assets/workshop.png';
-                        } elseif (
-                            Str::contains($title, 'hackathon') ||
-                            Str::contains($title, 'coding') ||
-                            Str::contains($title, 'developer') ||
-                            Str::contains($title, 'e-sport') ||
-                            Str::contains($title, 'tournament')
-                        ) {
-                            $poster = 'assets/hackathon.png';
-                        } elseif (
-                            Str::contains($title, 'jazz') ||
-                            Str::contains($title, 'stand up') ||
-                            Str::contains($title, 'comedy') ||
-                            Str::contains($title, 'night') ||
-                            Str::contains($title, 'entertainment')
-                        ) {
-                            $poster = 'assets/concert.png';
-                        }
-                    @endphp
-
                     <tr class="hover:bg-slate-50/50 transition">
                         <td class="px-8 py-6 font-bold text-slate-400">
                             {{ $events->firstItem() + $index }}
                         </td>
 
                         <td class="px-8 py-6">
-                            <img src="{{ asset($poster) }}"
+                            <img src="{{ ($event->poster_path && \Storage::disk('public')->exists($event->poster_path)) ? asset('storage/' . $event->poster_path) : 'https://placehold.co/16x20' }}"
                                 alt="{{ $event->title }}"
                                 class="w-16 h-20 rounded-xl object-cover shadow-sm">
                         </td>

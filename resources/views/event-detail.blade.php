@@ -1,38 +1,5 @@
 @extends('layouts.app')
 
-@php
-    use Illuminate\Support\Str;
-
-    $title = Str::lower($event->title);
-    $poster = 'assets/concert.png';
-
-    if (
-        Str::contains($title, 'ai') ||
-        Str::contains($title, 'ui') ||
-        Str::contains($title, 'ux') ||
-        Str::contains($title, 'seminar') ||
-        Str::contains($title, 'workshop')
-    ) {
-        $poster = 'assets/workshop.png';
-    } elseif (
-        Str::contains($title, 'hackathon') ||
-        Str::contains($title, 'coding') ||
-        Str::contains($title, 'developer') ||
-        Str::contains($title, 'e-sport') ||
-        Str::contains($title, 'tournament')
-    ) {
-        $poster = 'assets/hackathon.png';
-    } elseif (
-        Str::contains($title, 'jazz') ||
-        Str::contains($title, 'stand up') ||
-        Str::contains($title, 'comedy') ||
-        Str::contains($title, 'night') ||
-        Str::contains($title, 'entertainment')
-    ) {
-        $poster = 'assets/concert.png';
-    }
-@endphp
-
 @section('title', 'Detail Event - AmikomEventHub')
 
 @section('content')
@@ -43,7 +10,7 @@
             {{-- LEFT IMAGE --}}
             <div class="lg:col-span-2 space-y-8">
                 <div class="bg-white rounded-[2rem] p-4 shadow-2xl shadow-slate-200/70 border border-slate-100">
-                    <img src="{{ asset($poster) }}"
+                    <img src="{{ ($event->poster_path && \Storage::disk('public')->exists($event->poster_path)) ? asset('storage/' . $event->poster_path) : 'https://placehold.co/400x600' }}"
                         alt="{{ $event->title }}"
                         class="w-full aspect-[3/4] object-cover rounded-[1.5rem]">
                 </div>
