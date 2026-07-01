@@ -10,9 +10,12 @@
             {{-- LEFT IMAGE --}}
             <div class="lg:col-span-2 space-y-8">
                 <div class="bg-white rounded-[2rem] p-4 shadow-2xl shadow-slate-200/70 border border-slate-100">
-                    <img src="{{ ($event->poster_path && \Storage::disk('public')->exists($event->poster_path)) ? asset('storage/' . $event->poster_path) : 'https://placehold.co/400x600' }}"
-                        alt="{{ $event->title }}"
-                        class="w-full aspect-[3/4] object-cover rounded-[1.5rem]">
+                    <img src="{{ ($event->poster_path &&
+Storage::disk('public')->exists($event->poster_path))
+? asset('storage/' . $event->poster_path)
+: 'https://placehold.co/200x600' }}" alt="{{ $event->title }}"
+class="w-full rounded-[2.5rem] shadow-2xl border-8 border-white object-cover
+aspect-[3/4]">
                 </div>
 
                 <div class="bg-white rounded-[2rem] p-7 shadow-xl border border-slate-100">
@@ -52,7 +55,7 @@
                     <div class="flex items-center gap-2">
                         <span class="text-indigo-600">📅</span>
                         <span>
-                            {{ $event->date ? \Carbon\Carbon::parse($event->date)->format('d F Y, H:i') : '-' }}
+                            {{ $event->date ? \Carbon\Carbon::parse($event->date)->format('d M Y, H:i') : '-' }}
                         </span>
                     </div>
 
@@ -99,7 +102,7 @@
                             </p>
                         </div>
 
-                        <a href="{{ route('checkout', ['event' => $event->id]) }}"
+                        <a href="{{ route('checkout.create', ['event' => $event->id]) }}"
                             class="px-10 py-5 bg-white text-indigo-600 rounded-2xl font-black text-xl shadow-xl hover:bg-indigo-50 transition text-center">
                             Pesan Sekarang
                         </a>

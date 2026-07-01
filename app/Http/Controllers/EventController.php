@@ -12,7 +12,10 @@ class EventController extends Controller
     {
         $event->load('category');
 
-        return view('event-detail', compact('event'));
+        // Mengambil daftar kategori untuk keperluan menu footer.
+        $categories = \App\Models\Category::all();
+
+        return view('event-detail', compact('categories', 'event'));
     }
 
     public function checkout(Event $event)

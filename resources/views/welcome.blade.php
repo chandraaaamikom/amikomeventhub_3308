@@ -176,10 +176,9 @@
                                     Rp {{ number_format($event->price, 0, ',', '.') }}
                                 </span>
 
-                                <a href="{{ route('events.show', ['event' => $event->id]) }}"
-                                    class="px-5 py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-indigo-700 transition">
-                                    Detail
-                                </a>
+                                <a href="{{ route('events.show', $event->id) }}" class="px-5 py-2 bg-indigo-50
+text-indigo-600 rounded-xl font-bold hover:bg-indigo-600 hover:text-white
+transition">Lihat Detail</a>
                             </div>
                         </div>
                     </div>
