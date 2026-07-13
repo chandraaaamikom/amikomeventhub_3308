@@ -8,30 +8,39 @@ use App\Models\Transaction;
 
 class DashboardController extends Controller
 {
+    /**
+     * Menampilkan halaman dashboard admin
+     */
     public function index()
     {
-        $totalRevenue = Transaction::whereIn('status', ['success', 'paid'])
+        // 1. Menjumlahkan semua nominal total_price dari transaksi sukses/lunas
+        $totalRevenue = Transaction::whereIn('status', ['settlement', 'success'])
             ->sum('total_price');
 
-        $ticketSold = Transaction::whereIn('status', ['success', 'paid'])
+        // 2. Menghitung jumlah tiket yang sudah lunas
+        $ticketsSold = Transaction::whereIn('status', ['settlement', 'success'])
             ->count();
 
-        $activeEvents = Event::count();
+        // 3. Menghitung jumlah acara mendatang yang aktif
+        $activeEvents = Event::where('date', '>=', now())
+            ->count();
 
+        // 4. Menghitung jumlah pesanan pending
         $pendingOrders = Transaction::where('status', 'pending')
             ->count();
 
-        $latestTransactions = Transaction::with('event')
+        // 5. Menyertakan 5 transaksi terbaru
+        $recentTransactions = Transaction::with('event')
             ->latest()
             ->take(5)
             ->get();
 
         return view('admin.dashboard', compact(
             'totalRevenue',
-            'ticketSold',
+            'ticketsSold',
             'activeEvents',
             'pendingOrders',
-            'latestTransactions'
+            'recentTransactions'
         ));
     }
 }
